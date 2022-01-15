@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:todo_getx/controller/todo_controller.dart';
+import 'package:get/get.dart';
+import 'package:todo_getx/model/todo_model.dart';
 
 class TodoScreen extends StatelessWidget {
   const TodoScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final todoController = Get.find<TodoController>();
+
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const Expanded(
+            Expanded(
               child: TextField(
-                decoration: InputDecoration(
+                controller: todoController.todoTextController,
+                decoration: const InputDecoration(
                   hintText: "What do you wanna do?",
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
                 autofocus: true,
-                style: TextStyle(fontSize: 25),
+                style: const TextStyle(fontSize: 25),
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
               ),
@@ -27,7 +33,9 @@ class TodoScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   child: const Text(
                     "Cancel",
                     style: TextStyle(color: Colors.white),
@@ -37,14 +45,19 @@ class TodoScreen extends StatelessWidget {
                           MaterialStateProperty.all<Color>(Colors.red)),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    todoController.todos.add(
+                      TodoModel(title: todoController.todoTextController.text),
+                    );
+                    Get.back();
+                  },
                   child: const Text(
                     "Add",
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green)),
+                          MaterialStateProperty.all<Color>(Colors.green)),
                 )
               ],
             )
