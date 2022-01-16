@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_getx/controller/todo_controller.dart';
-import 'package:todo_getx/model/todo_model.dart';
 
-class TodoScreen extends StatelessWidget {
-  const TodoScreen({Key? key}) : super(key: key);
+class EditTodo extends StatelessWidget {
+  // const EditTodo({Key? key, required this.index}) : super(key: key);
+  EditTodo({required this.index});
+
+  final int index;
+  final todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
-    final todoController = Get.find<TodoController>();
-    final txtCont = TextEditingController();
+    final editTodoController =
+        TextEditingController(text: todoController.todos[index].title);
 
     return Scaffold(
       body: Container(
@@ -18,10 +21,9 @@ class TodoScreen extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
-                // controller: todoController.todoTextController,
-                controller: txtCont,
+                controller: editTodoController,
                 decoration: const InputDecoration(
-                  hintText: "What do you wanna do?",
+                  hintText: "",
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -48,14 +50,15 @@ class TodoScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    todoController.todos.add(
-                      TodoModel(title: txtCont.text),
-                    );
-                    print(todoController.todoTextController.text);
+                    var editing = todoController.todos[index];
+                    editing.title = editTodoController.text;
+                    todoController.todos[index] = editing;
+                    print(editing.title);
+                    print(editTodoController.text);
                     Get.back();
                   },
                   child: const Text(
-                    "Add",
+                    "Update",
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(
