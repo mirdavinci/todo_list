@@ -17,24 +17,37 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         child: Obx(() {
           return ListView.separated(
-              itemBuilder: (context, index) => ListTile(
-                title: Text(todoController.todos[index].title,
-                        style: todoController.todos[index].isDone
-                            ? const TextStyle(
-                                color: Colors.red,
-                                decoration: TextDecoration.lineThrough)
-                            : const TextStyle(color: Colors.black)),
-                    onTap: () {
-                      Get.to(() => EditTodo(index: index));
+              itemBuilder: (context, index) => Dismissible(
+                    background: Container(
+                      color: Colors.red,
+                      child: const Icon(
+                        Icons.delete_forever,
+                        color: Colors.white,
+                      ),
+                    ),
+                    key: UniqueKey(),
+                    onDismissed: (_) {
+                      todoController.deleteTodo(index);
                     },
-                    trailing: const Icon(Icons.edit),
-                    leading: Checkbox(
-                        value: todoController.todos[index].isDone,
-                        onChanged: (newValue) {
-                          var todo = todoController.todos[index];
-                          todo.isDone = newValue!;
-                          todoController.todos[index] = todo;
-                        }),
+                    child: ListTile(
+                      title: Text(todoController.todos[index].title,
+                          style: todoController.todos[index].isDone
+                              ? const TextStyle(
+                                  color: Colors.red,
+                                  decoration: TextDecoration.lineThrough)
+                              : const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        Get.to(() => EditTodo(index: index));
+                      },
+                      trailing: const Icon(Icons.edit),
+                      leading: Checkbox(
+                          value: todoController.todos[index].isDone,
+                          onChanged: (newValue) {
+                            var todo = todoController.todos[index];
+                            todo.isDone = newValue!;
+                            todoController.todos[index] = todo;
+                          }),
+                    ),
                   ),
               separatorBuilder: (context, pos) => const Divider(),
               itemCount: todoController.todos.length);

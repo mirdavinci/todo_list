@@ -8,7 +8,7 @@ class TodoController extends GetxController {
   var todos = <TodoModel>[].obs;
 
   final todoTextController = TextEditingController();
-  final addNewItemTextController = TextEditingController();
+  // final addNewItemTextController = TextEditingController();
 
   @override
   void onInit() {
@@ -25,5 +25,11 @@ class TodoController extends GetxController {
     });
 
     super.onInit();
+  }
+
+  void deleteTodo(index) {
+    todos.removeAt(index);
+    Get.snackbar('Removed', "Task was successfully deleted",
+        snackPosition: SnackPosition.BOTTOM);
   }
 }
