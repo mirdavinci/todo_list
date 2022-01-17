@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:todo_getx/binding/home_binding.dart';
 import 'package:todo_getx/view/home_screen.dart';
-import 'package:todo_getx/view/todo_screen.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
